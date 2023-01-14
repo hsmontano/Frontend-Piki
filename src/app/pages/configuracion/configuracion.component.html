@@ -1,0 +1,300 @@
+<div>
+  <div class="row" *ngIf="step === '0'">
+    <div class="col-12 px-4">
+      <div class="card text-left">
+        <div class="card-body">
+          <button class="btn btn-primary" (click)="select('1')" role="button">
+            Clases de turnos
+          </button>
+          <button class="btn btn-primary" (click)="select('2')" role="button">
+            Patios
+          </button>
+          <button class="btn btn-primary" (click)="select('3')" role="button">
+            Lineas de transporte
+          </button>
+          <button class="btn btn-primary" (click)="select('4')" role="button">
+            Tipos de contenedor
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="step == '1'">
+    <div class="col-md-12">
+      <div>
+        <button
+          type="button"
+          (click)="select('0')"
+          class="btn btn-outline-primary"
+        >
+          Regresar
+        </button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-6">
+              <h4 style="margin: 10px; font-weight: bold">Clases de turnos</h4>
+            </div>
+            <div class="col-6 text-right">
+              <button
+                type="button"
+                (click)="toggleModal({}, 'createOne')"
+                class="btn btn-outline-success"
+              >
+                Registrar
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="text-primary">
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th class="text-right">Acciones</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of shiftClasses">
+                    <td>
+                      {{ item.name }}
+                    </td>
+                    <td>
+                      {{ item.price }}
+                    </td>
+                    <td class="text-right">
+                      <button
+                        class="btn btn-danger"
+                        (click)="toggleModal(item, 'deleteOne')"
+                      >
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                      <button
+                        class="btn btn-info ml-2"
+                        (click)="toggleModal(item, 'updateOne')"
+                      >
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table-mat-component
+    title="Patios"
+    *ngIf="step == '2'"
+    [itemsIn]="containerYards"
+  ></table-mat-component>
+  <table-mat-component
+    title="Lineas de transporte"
+    *ngIf="step == '3'"
+    [itemsIn]="transLines"
+  ></table-mat-component>
+  <table-mat-component
+    title="Tipos de contenedor"
+    *ngIf="step == '4'"
+    [itemsIn]="containerTypes"
+  ></table-mat-component>
+  <ngx-spinner></ngx-spinner>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" *ngIf="step == '1'" id="modal-basic-title">
+      Clases de turnos
+    </h4>
+    <h4 class="modal-title" *ngIf="step == '2'" id="modal-basic-title">
+      Patios
+    </h4>
+    <h4 class="modal-title" *ngIf="step == '3'" id="modal-basic-title">
+      Lineas de transporte
+    </h4>
+    <h4 class="modal-title" *ngIf="step == '4'" id="modal-basic-title">
+      Tipos de contenedor
+    </h4>
+  </div>
+  <div class="modal-body">
+    <form
+      [formGroup]="stepOneForm"
+      action=""
+      *ngIf="(step == '1' && type === 'updateOne') || type === 'createOne'"
+    >
+      <div class="form-group">
+        <label for="">Nombre de clase</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          aria-describedby="helpNameId"
+          placeholder="Carretera"
+        />
+        <small id="helpNameId" class="form-text text-muted"
+          >Ingrese nombre de clase</small
+        >
+      </div>
+      <input type="hidden" formControlName="id" />
+      <div class="form-group">
+        <label for="">Precio de clase</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="price"
+          aria-describedby="helpPriceId"
+          placeholder="8000"
+        />
+        <small id="helpPriceId" class="form-text text-muted"
+          >Ingrese el valor sin puntos</small
+        >
+      </div>
+    </form>
+    <form
+      [formGroup]="stepTwoForm"
+      action=""
+      *ngIf="type === 'updateTwo' || type === 'createTwo'"
+    >
+      <div *ngIf="step == '2'" class="form-group">
+        <label for="">Codigo del patio</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="code"
+          aria-describedby="helpCodeId"
+          placeholder="Colfpcc"
+        />
+        <small id="helpCodeId" class="form-text text-muted"
+          >Ingrese código del patio</small
+        >
+      </div>
+      <div *ngIf="step == '3'" class="form-group">
+        <label for="">Codigo de linea</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="code"
+          aria-describedby="helpCodeId"
+          placeholder="Cmacgmkl"
+        />
+        <small id="helpCodeId" class="form-text text-muted"
+          >Ingrese código de la linea</small
+        >
+      </div>
+      <div *ngIf="step == '4'" class="form-group">
+        <label for="">Codigo de tipo de contenedor</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="code"
+          aria-describedby="helpCodeId"
+          placeholder="Dry40"
+        />
+        <small id="helpCodeId" class="form-text text-muted"
+          >Ingrese código de la tipo de contenedor</small
+        >
+      </div>
+      <input type="hidden" formControlName="id" />
+      <div *ngIf="step == '2'" class="form-group">
+        <label for="">Nombre del patio</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="description"
+          aria-describedby="helpDescriptionId"
+          placeholder="COLFERCAR - PCC"
+        />
+        <small id="helpDescriptionId" class="form-text text-muted"
+          >Ingrese el nombre del patio</small
+        >
+      </div>
+      <div *ngIf="step == '4'" class="form-group">
+        <label for="">Nombre del tipo de contenedor</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="description"
+          aria-describedby="helpDescriptionId"
+          placeholder="Dry - 40 Pies"
+        />
+        <small id="helpDescriptionId" class="form-text text-muted"
+          >Ingrese el nombre del tipo de contenedor</small
+        >
+      </div>
+      <div *ngIf="step == '3'" class="form-group">
+        <label for="">Nombre de la linea</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="description"
+          aria-describedby="helpDescriptionId"
+          placeholder="CMA - CGM / K- LINE"
+        />
+        <small id="helpDescriptionId" class="form-text text-muted"
+          >Ingrese el nombre de la linea</small
+        >
+      </div>
+    </form>
+    <form
+      [formGroup]="stepOneForm"
+      action=""
+      *ngIf="step == '1' && type === 'deleteOne'"
+    >
+      <input type="hidden" formControlName="id" />
+      <div class="form-group">
+        <h3>
+          Seguro de eliminar la clase "{{ stepOneForm.controls.name.value }}"
+        </h3>
+      </div>
+    </form>
+    <form [formGroup]="stepTwoForm" action="" *ngIf="type === 'deleteTwo'">
+      <input type="hidden" formControlName="id" />
+      <div class="form-group">
+        <h3>
+          Seguro de eliminar
+          {{
+            step === "2"
+              ? "el patio"
+              : "" || step === "3"
+              ? "la linea de transporte"
+              : "" || step === "4"
+              ? "el tipo "
+              : ""
+          }}
+          "{{ stepTwoForm.controls.description.value }}"
+        </h3>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" (click)="modal.close('Save click')">
+      Cancelar
+    </button>
+    <button
+      type="button"
+      *ngIf="type === 'updateOne' || type === 'updateTwo'"
+      class="btn btn-info"
+      (click)="update()"
+    >
+      Actualizar
+    </button>
+    <button
+      type="button"
+      *ngIf="type === 'createOne' || type === 'createTwo'"
+      class="btn btn-success"
+      (click)="create()"
+    >
+      Crear
+    </button>
+    <button
+      type="button"
+      *ngIf="type === 'deleteOne' || type === 'deleteTwo'"
+      class="btn btn-danger"
+      (click)="delete()"
+    >
+      Eliminar
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,63 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-beat" [fullScreen] = "false">
+  <p style="color: white" > Descargando... </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between px-4">
+            <h4 class="card-title" *ngIf="turnosData.length">Reportes ({{ turnosData.length }})</h4>
+            <h4 class="card-title" *ngIf="!turnosData.length">Reportes</h4>
+            <div class="d-flex">
+              <div class="dropdown">
+                <button class="btn btn-danger dropdown-toggle" [disabled]="!turnosData.length" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Exportar
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)="exportar('EXCEL')">EXCEL</a>
+                  <a class="dropdown-item" (click)="exportar('PDF')">PDF</a>
+                </div>
+              </div>
+              <button class="btn btn-secondary " type="button" (click)="volver.emit()">
+                atras
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="px-4">
+            <div class="table-responsive">
+              <table class="table table-sm" *ngIf="camposData.length">
+                <thead class=" text-primary">
+                  <th *ngFor="let campo of camposData">
+                    {{ campo }}
+                  </th>
+                </thead>
+                <tbody *ngIf="turnosData.length">
+                  <tr *ngFor="let turno of turnosData | paginate: config ">
+                    <td *ngFor="let campo of camposData">
+                      {{ turno[campo] }}
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="!turnosData.length">
+                  <td colspan="100%" class="text-center py-4">
+                    No hay datos relacionados
+                  </td>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex justify-content-between p-2" *ngIf="turnosData.length">
+              <pagination-controls
+              (pageChange)="onPageChange($event)"
+              (pageBoundsCorrection)="onPageBoundsCorrection($event)"
+              previousLabel="Anterior"
+              nextLabel="Siguiente"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+<div class="row">
+   <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <h4 class="card-title col-8">Empresas Registradas En El Sistema</h4>
+          <div class="d-block align-self-end col-2">
+            <button  type="button" class="btn btn-danger" (click)="open(content)">
+              <i class="fa fa-plus text-white fa-lg"></i>
+              <span class="text-white"> NUEVO</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col" class="text-center w200">Opciones</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr *ngFor="let item of companies  | paginate: config ">
+                <td>{{ item.name }}</td>
+                <td class="w200">
+                   <div class="d-flex justify-content-center">
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger float-right btn-round mr-3 btn-sm"
+                      (click)="open(content, true, item.name, item.id)"
+                    >
+                      <i class="fa fa-pencil fa-sm"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger float-right btn-round btn-sm"
+                      (click)="deleteCompany( item.id )"
+                    >
+                      <i class="fa fa-trash fa-sm"></i>
+                    </button>
+                  </div> 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-between p-2" >
+              <pagination-controls
+              (pageChange)="onPageChange($event)"
+              (pageBoundsCorrection)="onPageBoundsCorrection($event)"
+              previousLabel="Anterior"
+              nextLabel="Siguiente"
+              >
+              </pagination-controls>
+            </div>
+        </div>
+      </div>
+    </div>
+   </div>
+  </div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">REGISTRAR EMPRESA!</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="newCompanyForm" class="mb-5">
+            <div class="mb-4">
+            <label class="form-label ">Nombre de la empresa</label>
+            <input type="text" 
+            class="form-control"  
+            formControlName="name" 
+            placeholder="INombre de la empresa"
+            >
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+              *ngIf="(cf.name.dirty || cf.name.touched) && cf.name.errors && Submitted">
+            </small>
+            </div>
+            <div class=" d-flex justify-content-center">
+                <button type="button" class="btn btn-danger w-50" (click)="newCompany()" [disabled]="(cf.name.invalid)"
+                ><span *ngIf="!update">Guardar</span>
+                <span *ngIf="update">Actualizar</span>
+              </button>
+               
+            </div>
+
+        </form>
+      </div>
+</ng-template>

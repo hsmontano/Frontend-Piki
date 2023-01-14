@@ -1,0 +1,521 @@
+<div class="row">
+  <div class="col-12 px-4">
+    <div
+      class="
+        relative
+        flex flex-col
+        min-w-0
+        break-words
+        w-full
+        mb-6
+        shadow-lg
+        rounded-lg
+        bg-blueGray-100
+        border-0
+      "
+    >
+      <div class="rounded-t bg-white mb-0 px-6 py-6">
+        <div class="row" style="height: 50px">
+          <div class="col-12" style="text-align: center; align-self: center">
+            <h4 style="margin-left: 10px; font-weight: bold">
+              {{ settings.title }}
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+        <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+          <h6 style="font-weight: bold; margin: 15px 5px">
+            {{ settings.belongs }}
+          </h6>
+          <div class="row">
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Numero de {{ settings.identification }}
+                </label>
+                <input
+                  numbersOnly
+                  (keyup)="onSearch('')"
+                  formControlName="documentId"
+                  placeholder="1.111.7483"
+                  *ngIf="settings.type === '1' || settings.type === '3' || settings.type === '4'"
+                  class="form-control"
+                  [ngClass]="{'is-valid' : Form.controls.documentId.valid}"
+                />
+                <input
+                  numbersOnly
+                  (keyup)="onSearch('')"
+                  formControlName="documentId"
+                  placeholder="36473423-1"
+                  *ngIf="settings.type === '2'"
+                  class="form-control"
+                  [ngClass]="{'is-valid' : Form.controls.documentId.valid}"
+                />
+                <div class="w-1/3 bg-white rounded-lg shadow content-driver">
+                  <ul class="list-group">
+                    <li class="list-group-item" *ngFor="let driver of drivers">
+                        <a style="width: 100%" (click)="selectDriver(driver)">{{ driver.name }}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Nombre
+                </label>
+                <input
+                  type="text"
+                  formControlName="name"
+                  placeholder="John Doe"
+                  *ngIf="settings.type === '1' || settings.type === '3' || settings.type === '4'"
+                  class="form-control"
+                  [ngClass]="{'is-valid' : Form.controls.name.valid}"
+                />
+                <input
+                    type="text"
+                    formControlName="name"
+                    placeholder="Data Control"
+                    *ngIf="settings.type === '2'"
+                    class="form-control"
+                    [ngClass]="{'is-valid' : Form.controls.name.valid}"
+                />
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Numero telefonico
+                </label>
+                <input
+                  numbersOnly
+                  formControlName="phone"
+                  placeholder="312-555-5545"
+                  class="form-control"
+                  [ngClass]="{'is-valid' : Form.controls.phone.valid}"
+                />
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3" *ngIf="settings.type === '1' || settings.type === '3' || settings.type === '4'">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Placa del vehículo
+                </label>
+                <input
+                  type="text"
+                  formControlName="placa"
+                  placeholder="CVD-123"
+                  class="form-control"
+                  [ngClass]="{'is-valid' : Form.controls.placa.valid}"
+                />
+              </div>
+              <div class="relative w-full mb-3" *ngIf="settings.type === '2'">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Correo electrónico
+                </label>
+                <input
+                  type="text"
+                  placeholder="correo@corre.com"
+                  formControlName="email"
+                  class="form-control"
+                  [ngClass]="{'is-valid' : Form.controls.email.valid}"
+                />
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-6 border-b-1 border-blueGray-300" />
+
+          <h6 style="font-weight: bold; margin: 15px 5px">
+            Información del contenedor
+          </h6>
+          <div class="row">
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Tipo de contenedor 1
+                </label>
+                <select
+                  formControlName="containerType"
+                  (ngModelChange)="selectType($event)"
+                  [ngClass]="{'is-valid' : Form.controls.containerType.valid}"
+                  class="form-control"
+                >
+                  <option value="0">Selecciona una opcion</option>
+                  <option *ngFor="let type of typesC" [value]="type.code">
+                    {{ type.description }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Código de contenedor 1
+                </label>
+                <input
+                  type="text"
+                  formControlName="container"
+                  placeholder="SUDU1234567"
+                  [ngClass]="{'is-valid' : Form.controls.container.valid}"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div *ngIf="showContainers" class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Tipo de contenedor 2
+                </label>
+                <select formControlName="containerType2" class="form-control" 
+                  [ngClass]="{'is-valid' : Form.controls.containerType2.valid}">
+                  <option value="0">Selecciona una opcion</option>
+                  <option *ngFor="let type of typesC" [value]="type.code">
+                    {{ type.description }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div *ngIf="showContainers" class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Código de contenedor 2
+                </label>
+                <input
+                  type="text"
+                  formControlName="container2"
+                  placeholder="SUDU1234567"
+                  [ngClass]="{'is-valid' : Form.controls.container2.valid}"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <input
+                type="hidden"
+                formControlName="shiftDate"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <hr class="mt-6 border-b-1 border-blueGray-300" />
+
+          <h6 style="font-weight: bold; margin: 15px 5px">
+            Información de cliente y patio
+          </h6>
+          <div class="row">
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Linea de transportadora
+                </label>
+                <ng-select [items]="linesT" 
+                    placeholder="Selecciona una opción"
+                    bindLabel="description" 
+                    bindValue="id" 
+                    class="custom"
+                    [ngClass]="{'is-valid' : Form.controls.transportLine.valid}"
+                    formControlName="transportLine">
+                </ng-select>
+                <div><a (click)="create(3)">Agregar transportadora</a></div>
+              </div>
+              
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Cliente
+                </label>
+                <ng-select [items]="clients" 
+                    bindLabel="name" 
+                    bindValue="id" 
+                    placeholder="Selecciona una opción"
+                    class="custom"
+                    [ngClass]="{'is-valid' : Form.controls.clientId.valid}"
+                    formControlName="clientId">
+                </ng-select>
+                <div><a (click)="create(1)">Agregar cliente</a></div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Patio
+                </label>
+                <ng-select [items]="yards" 
+                    bindLabel="description" 
+                    bindValue="id" 
+                    placeholder="Selecciona una opción"
+                    class="custom"
+                    [ngClass]="{'is-valid' : Form.controls.patio.valid}"
+                    formControlName="patio">
+                </ng-select>
+                <div><a (click)="create(2)">Agregar patio</a></div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 px-4">
+              <div class="relative w-full mb-3">
+                <label
+                  class="
+                    block
+                    uppercase
+                    text-blueGray-600 text-xs
+                    font-bold
+                    mb-2
+                  "
+                  htmlFor="grid-password"
+                >
+                  Fecha
+                </label>
+                <input
+                  type="datetime-local"
+                  id="datefield"
+                  [ngClass]="{'is-valid' : Form.controls.limitTime.valid}"
+                  formControlName="limitTime"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-6 border-b-1 border-blueGray-300" />
+
+          <h6 style="font-weight: bold; margin: 15px 5px">Observaciones</h6>
+          <div class="row">
+            <div class="col-12 px-4">
+              <div class="relative w-full mb-3">
+                <textarea
+                  type="text"
+                  formControlName="observations"
+                  class="form-control"
+                  rows="4"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="rounded-t bg-white mb-0 px-6 py-6">
+        <div class="row">
+          <div class="col-12" style="text-align: right; align-self: center">
+            <button
+              class="btn btn-primary"
+              style="margin-right: 20px"
+              type="button"
+              [disabled]="!Form.valid || submitted"
+              (click)="onSubmit()"
+            >
+              Enviar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner></ngx-spinner>
+</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Tiquete</h4>
+    <h4 class="modal-title" >Turno {{shift?.dayShift}}</h4>
+  </div>
+  <div class="modal-body">
+    <ul class="list-group">
+        <li class="list-group-item" ><strong>Nombre del cliente: </strong> <span style="float: right">{{shift?.client?.name}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" ><strong>Nit: </strong> <span style="float: right">{{shift?.client?.nit}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" class="list-group-item" ><strong>Telefono del cliente: </strong> <span style="float: right">{{shift?.client?.phone}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" *ngIf="shift.shiftClassId === 1 || shift.shiftClassId === 3"><strong>Nombre del conductor: </strong> <span style="float: right">{{shift?.driver?.name}}</span></li>
+        <li class="list-group-item" *ngIf="shift.shiftClassId === 2"><strong>Nombre del empresa: </strong> <span style="float: right">{{shift?.driver?.name}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" *ngIf="shift.shiftClassId === 1 || shift.shiftClassId === 3"><strong>Documento del conductor: </strong> <span style="float: right">{{shift?.driver?.identification}}</span></li>
+        <li class="list-group-item" *ngIf="shift.shiftClassId === 2"><strong>Nit del empresa: </strong> <span style="float: right">{{shift?.driver?.identification}}</span></li>
+        <div *ngFor="let container of shift.containers; let i = index">
+            <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+            <li class="list-group-item" ><strong>Numero de contenedor {{i+1}}: </strong> <span style="float: right">{{container?.code}}</span></li>
+            <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+            <li class="list-group-item"><strong>Tipo de contenedor {{i+1}}: </strong> <span style="float: right">{{container?.containerType?.description}}</span></li>
+        </div>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" ><strong>Fecha de creacion: </strong> <span style="float: right">{{shift?.date | date: 'medium'}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" style="margin-top:20px"><strong>Total a pagar: </strong> <span style="float: right"> {{shift?.price | currency: 'COP'}}</span></li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click'); genPdf()">Imprimir</button>
+  </div>
+</ng-template>
+
+<ng-template #contentCreate let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{typeCreateTitle}}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="FormClient" *ngIf="typeCreate == 1">
+      <div class="form-group">
+        <label for="">Nit</label>
+        <input type="text"
+          class="form-control" formControlName="nit" aria-describedby="helpId" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="">Nombre</label>
+        <input type="text"
+          class="form-control" formControlName="name" aria-describedby="helpId" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="">Correo electrónico</label>
+        <input type="text"
+          class="form-control" formControlName="email" aria-describedby="helpId" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="">Telefono</label>
+        <input type="text"
+          class="form-control" formControlName="phone" aria-describedby="helpId" placeholder="">
+      </div>
+    </form>
+    <form [formGroup]="FormCreate" *ngIf="typeCreate == 2">
+      <div class="form-group">
+        <label for="">Codigo</label>
+        <input type="text"
+          class="form-control" formControlName="code" aria-describedby="helpId" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="">Descripción</label>
+        <input type="text"
+          class="form-control" formControlName="description" aria-describedby="helpId" placeholder="">
+      </div>
+    </form>
+    <form [formGroup]="FormCreate" *ngIf="typeCreate == 3">
+      <div class="form-group">
+        <label for="">Codigo</label>
+        <input type="text"
+          class="form-control" formControlName="code" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="">Nombre</label>
+        <input type="text"
+          class="form-control" formControlName="description" placeholder="">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancelar</button>
+    <button type="button" class="btn btn-primary" [disabled]="FormClient.invalid" *ngIf="typeCreate == 1" (click)="modal.close('Save click'); save()">Guardar</button>
+    <button type="button" class="btn btn-primary" [disabled]="FormCreate.invalid" *ngIf="typeCreate == 3 || typeCreate == 2" (click)="modal.close('Save click'); save()">Guardar</button>
+  </div>
+</ng-template>

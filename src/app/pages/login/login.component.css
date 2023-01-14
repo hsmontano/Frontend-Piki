@@ -1,0 +1,58 @@
+html,
+body {
+    background-image: url(../../../assets/img/DistantMountain.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.formulario {
+    background: rgba(0, 0, 0, .1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.568);
+    color: white;
+}
+
+.form-control {
+    background: rgba(0, 0, 0, .3);
+    border-style: none;
+    transition: 0.5s ease-in;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-control:focus {
+    background: none;
+    box-shadow: none;
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: white;
+}
+
+.center {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .heading {
+    font-size: 10vw;
+    text-shadow: 4px 4px 0px #3F7FBF;
+    mix-blend-mode: screen;
+    animation: fadeIn 2.5s linear forwards;
+  }
+  
+  @keyframes fadeIn {
+      0% {
+          opacity: 0
+      }
+  
+      100% {
+          opacity: 1;
+      }
+  }

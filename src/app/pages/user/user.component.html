@@ -1,0 +1,329 @@
+<div class="row">
+    <div class="col-md-12">
+     <div class="card">
+       <div class="card-header">
+         <div class="row">
+           <h4 class="card-title col-10">Usuarios Registrados En El Sistema</h4>
+           <div class="d-block align-self-end col-2">
+             <button  type="button" class="btn btn-danger" (click)="open(content)">
+               <i class="fa fa-plus text-white fa-lg"></i>
+               <span class="text-white"> NUEVO</span>
+             </button>
+           </div>
+         </div>
+       </div>
+       <div class="card-body">
+         <div class="">
+           <table class="table table-striped">
+             <thead>
+               <tr>
+                 <th scope="col">Nombre</th>
+                 <th scope="col">Usuario</th>
+                 <th scope="col">Email</th>
+                 <th scope="col">Empresa</th>
+                 <th scope="col">Telefono</th>
+                 <th scope="col">Tipo</th>
+                 <th scope="col">Rol</th>
+                 <th scope="col" class="text-center w200">Opciones</th>
+               </tr>
+             </thead>
+             <tbody >
+               <tr *ngFor="let item of users  | paginate: config ">
+                 <td>{{ item.name }}</td>
+                 <td>{{ item.login }}</td>
+                 <td>{{ item.email }}</td>
+                 <td>{{ item.company.name }}</td>
+                 <td>{{ item.phone }}</td>
+                 <td>{{ item.type }}</td>
+                 <td>{{ item.role.name }}</td>
+                 <td class="w200">
+                    <div class="d-flex justify-content-center">
+                      <button
+                      type="button"
+                      class="btn btn-outline-danger float-right btn-round mr-3 btn-sm"
+                      (click)="openModal( modalUpdate, item )"
+                    >
+                      <i class="fa fa-pencil fa-sm"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger float-right btn-round btn-sm"
+                      (click)="deleteUser( item.id )"
+                    >
+                      <i class="fa fa-trash fa-sm"></i>
+                    </button>
+                   </div> 
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+           <div class="d-flex justify-content-between p-2" >
+               <pagination-controls
+               (pageChange)="onPageChange($event)"
+               (pageBoundsCorrection)="onPageBoundsCorrection($event)"
+               previousLabel="Anterior"
+               nextLabel="Siguiente"
+               >
+               </pagination-controls>
+             </div>
+         </div>
+       </div>
+     </div>
+    </div>
+   </div>
+
+   <ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">REGISTRAR USUARIO</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="newUserForm" class="mb-5">
+          <div class="row">
+            <div class="col-md-6 py-2">
+               <label class="form-label ">Nombre Completo*</label>
+               <input type="text" 
+               class="form-control"  
+               formControlName="name" 
+               placeholder="Ingresa el nombre"
+               
+               >
+               <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+               *ngIf="(uf.name.dirty || uf.name.touched) && uf.name.errors && Submitted">
+               </small>
+           </div>
+          
+        <div class="col-md-6 py-2">
+               <label class="form-label ">Nombre De Usuario*</label>
+               <input type="text" 
+               class="form-control"  
+               formControlName="login" 
+               placeholder="Ingresa el usuario"
+               >
+               <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+               *ngIf="(uf.login.dirty || uf.login.touched) && uf.login.errors && Submitted">
+               </small>
+           </div>
+        <div class="col-md-6 py-2">
+               <label class="form-label ">Correo Electronico*</label>
+               <input type="email" 
+               class="form-control"  
+               formControlName="email" 
+               placeholder="Ingresa el correo"
+               >
+               <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+               *ngIf="(uf.email.dirty || uf.email.touched) && uf.email.errors && Submitted">
+               </small>
+           </div>
+        <div class="col-md-6 py-2">
+               <label class="form-label ">Contraseña*</label>
+               <input type="password" 
+               class="form-control"  
+               formControlName="password" 
+               placeholder="Contraseña"
+               >
+               <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+               *ngIf="(uf.password.dirty || uf.password.touched) && uf.password.errors && Submitted">
+               </small>
+           </div>
+        <div class="col-md-6 py-2">
+               <label class="form-label ">Identificacion*</label>
+               <input type="number" 
+               class="form-control"  
+               formControlName="identification" 
+               placeholder="N° Identificacion"
+               >
+               <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+               *ngIf="(uf.identification.dirty || uf.identification.touched) && uf.identification.errors && Submitted">
+               </small>
+           </div>
+        <div class="col-md-6 py-2">
+               <label class="form-label ">Telefono*</label>
+               <input type="number" 
+               class="form-control"  
+               formControlName="phone" 
+               placeholder="Telefono"
+               >
+               <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+               *ngIf="(uf.phone.dirty || uf.phone.touched) && uf.phone.errors && Submitted">
+               </small>
+           </div>
+        <div class="col-md-6 py-2">
+               <label class="form-label ">Empresa*</label>
+               <select class="form-control" formControlName="companyId">
+                <option selected disabled value="">Selecione una opcion</option>
+                   <option [ngValue]="item.id" 
+                   *ngFor="let item of companies">
+                       {{ item.name }}
+                   </option>
+               </select>
+               <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+               *ngIf="(uf.companyId.dirty || uf.companyId.touched) && uf.companyId.errors && Submitted">
+               </small>
+           </div>
+           <div class="col-md-6 py-2">
+            <label class="form-label ">Rol*</label>
+            <select class="form-control" formControlName="roleId">
+             <option selected disabled value="">Selecione el rol</option>
+                <option [ngValue]="item.id" 
+                *ngFor="let item of roles">
+                    {{ item.name }}
+                </option>
+            </select>
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+            *ngIf="(uf.roleId.dirty || uf.roleId.touched) && uf.roleId.errors && Submitted">
+            </small>
+        </div>
+         <div class="col-md-6 py-2">
+               <label class="form-label ">Tipo*</label>
+               <select class="form-control" formControlName="type">
+                   <option selected disabled value="">Selecione una opcion</option>
+                   <option value="1">Tipo 1</option>
+                   <option value="2">Tipo 2</option>
+                   
+               </select>
+               <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+               *ngIf="(uf.phone.dirty || uf.phone.touched) && uf.phone.errors && Submitted">
+               </small>
+           </div>
+           </div>
+           <hr>
+            <div class=" d-flex justify-content-center">
+            <button type="button" class="btn btn-danger w-50" (click)="newUser()" [disabled]="(newUserForm.invalid)" >
+              <span>Guardar</span>
+            </button>
+            </div>
+
+        </form>
+      </div>
+</ng-template>
+<!-- disabled]="(newUserForm.invalid)" -->
+<ng-template #modalUpdate let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title">ACTUALIZAR USUARIO</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="newUserForm">
+        <div class="row">
+         <div class="col-md-6 py-2">
+            <label class="form-label ">Nombre Completo*</label>
+            <input type="text" 
+            class="form-control"  
+            formControlName="name" 
+            placeholder="Ingresa el nombre"
+            
+            >
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+            *ngIf="(uf.name.dirty || uf.name.touched) && uf.name.errors && Submitted">
+            </small>
+        </div>
+       
+     <div class="col-md-6 py-2">
+            <label class="form-label ">Nombre De Usuario*</label>
+            <input type="text" 
+            class="form-control"  
+            formControlName="login" 
+            placeholder="Ingresa el usuario"
+            >
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+            *ngIf="(uf.login.dirty || uf.login.touched) && uf.login.errors && Submitted">
+            </small>
+        </div>
+     <div class="col-md-6 py-2">
+            <label class="form-label ">Correo Electronico*</label>
+            <input type="email" 
+            class="form-control"  
+            formControlName="email" 
+            placeholder="Ingresa el correo"
+            >
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+            *ngIf="(uf.email.dirty || uf.email.touched) && uf.email.errors && Submitted">
+            </small>
+        </div>
+     <div class="col-md-6 py-2">
+            <label class="form-label ">Contraseña*</label>
+            <input type="password" 
+            class="form-control"  
+            formControlName="password" 
+            placeholder="Contraseña"
+            >
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+            *ngIf="(uf.password.dirty || uf.password.touched) && uf.password.errors && Submitted">
+            </small>
+        </div>
+     <div class="col-md-6 py-2">
+            <label class="form-label ">Identificacion*</label>
+            <input type="text" 
+            class="form-control"  
+            formControlName="identification" 
+            placeholder="N° Identificacion"
+            >
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+            *ngIf="(uf.identification.dirty || uf.identification.touched) && uf.identification.errors && Submitted">
+            </small>
+        </div>
+     <div class="col-md-6 py-2">
+            <label class="form-label ">Telefono*</label>
+            <input type="text" 
+            class="form-control"  
+            formControlName="phone" 
+            placeholder="Telefono"
+            >
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+            *ngIf="(uf.phone.dirty || uf.phone.touched) && uf.phone.errors && Submitted">
+            </small>
+        </div>
+     <div class="col-md-6 py-2">
+            <label class="form-label ">Empresa*</label>
+            <select class="form-control" formControlName="companyId">
+              <option selected disabled value="">Selecione una opcion</option>
+                <option [ngValue]="item.id" 
+                *ngFor="let item of companies">
+                    {{ item.name }}
+                </option>
+            </select>
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+            *ngIf="(uf.companyId.dirty || uf.companyId.touched) && uf.companyId.errors && Submitted">
+            </small>
+        </div>
+        <div class="col-md-6 py-2">
+          <label class="form-label ">Rol*</label>
+          <select class="form-control" formControlName="roleId">
+           <option selected disabled value="">Selecione el rol</option>
+              <option [ngValue]="item.id" 
+              *ngFor="let item of roles">
+                  {{ item.name }}
+              </option>
+          </select>
+          <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+          *ngIf="(uf.roleId.dirty || uf.roleId.touched) && uf.roleId.errors && Submitted">
+          </small>
+      </div>
+      <div class="col-md-6 py-2">
+            <label class="form-label ">Tipo*</label>
+            <select class="form-control" formControlName="type">
+                <option selected disabled value="">Selecione una opcion</option>
+                <option value="1">Tipo 1</option>
+                <option value="2">Tipo 2</option>
+                
+            </select>
+            <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+            *ngIf="(uf.phone.dirty || uf.phone.touched) && uf.phone.errors && Submitted">
+            </small>
+        </div>
+        </div>
+        <hr>
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-danger w-50" (click)="updateUser()" [disabled]="(newUserForm.invalid)" >
+              Actualizar
+            </button>
+          </div>
+
+      </form>
+    </div>
+</ng-template>

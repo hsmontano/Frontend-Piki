@@ -1,0 +1,46 @@
+<body>
+    <div class="container">
+        <div class="row justify-content-center pt-5">
+            <div class="col-md-6 col-sm-8 col-xl-4 col-lg-5 formulario">
+                <form [formGroup]="authForm" (ngSubmit)="login()" class="mb-5">
+                    <div class="form-group text-center">
+                     <img class="mb-1 mx-auto" src="assets/img/LOGO-PIKI73.ico">
+                    </div>
+                     <div class="mb-4">
+                     <label class="form-label">Nombre de usuario</label>
+                     <input type="text" class="form-control" placeholder="Ingresa tu correo" formControlName="login" placeholder="Ingresa el email">
+                     <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+                         *ngIf="(af.login.dirty || af.login.touched) && af.login.errors && Submitted" >
+                     </small>
+                     </div>
+                     <div class="mb-4">
+                     <label class="form-label ">Contraseña</label>
+                     <input
+                     type="password" class="form-control" placeholder="Ingresa tu correo"
+                     formControlName="password" placeholder="Ingresa la contraseña">
+                     <small class="bg-secondary text-light mt-1 px-2 py-1 rounded" 
+                         *ngIf="(af.password.dirty || af.password.touched) && af.password.errors && Submitted" >
+                     </small>
+                     </div>
+                     <button type="submit" class="btn btn-danger w-100" [disabled]="(af.login.invalid) || (af.password.invalid)"
+                     >Iniciar sesión</button>
+                 </form>
+            </div>
+        </div>
+        <div class="center">
+            <h1 class="heading">PIKI 7</h1>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+</body>
+        

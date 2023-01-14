@@ -1,0 +1,25 @@
+html{
+    position: relative;
+    min-height: 100%;
+  }
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+
+.ng-placeholder {
+    padding: 20px;
+    font-size: 20px;
+}
+
+.ng-select.custom.is-valid {
+    background-color: #fff !important; 
+    border: 1px solid rgba(10, 164, 159, 1);
+    border-radius: 5px;
+    height: 50px;
+
+    .ng-placeholder {
+      color: #fff !important;
+    }
+}
+
+@import "~@ng-select/ng-select/themes/material.theme.css";

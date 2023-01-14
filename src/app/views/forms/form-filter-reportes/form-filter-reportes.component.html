@@ -1,0 +1,154 @@
+<div class="row">
+    <div class="col-md-12">
+      <div class="card card-user">
+        <div class="card-header">
+          <div class="px-4">
+            <h5 class="card-title">Reportes</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="px-4">
+            <form [formGroup]="formFilter">
+              <div class="row">
+                <div class="col-md-12 py-1">
+                  <div class="form-group">
+                    <label>Campos <span class="text-danger">*</span></label>
+                      <ng-multiselect-dropdown
+                          formControlName="campos"
+                          placeholder="Seleccione los campos"
+                          [settings]="dropdownSettingsMultiple"
+                          [data]="dropdownList"
+                      >
+                      </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>            
+              <div class="row">
+                <div class="col-md-12 py-1">
+                  <div class="form-group">
+                    <label>Título del documento</label>
+                    <input type="text" class="form-control" placeholder="Ingrese el título del documento" formControlName="titulo">
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="row">
+                <div class="col-md-12 py-1">
+                  <div class="form-group">
+                    <label>Tipo de plantilla</label>
+                    <ng-multiselect-dropdown
+                          [formControl]="inputTipoPlantilla"
+                          placeholder="Seleccione el tipo de plantilla"
+                          [settings]="dropdownSettingsSingleNoSearch"
+                          [data]="tipoPlantilla"
+                      >
+                      </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div> -->
+              <!-- <div class="row">
+                <div class="col-md-12 py-1">
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-primary active">
+                      <input type="radio" name="options" id="option1" checked> Diaria
+                    </label>
+                    <label class="btn btn-primary">
+                      <input type="radio" name="options" id="option2"> Por rango de fechas
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+              <div class="row">
+                <div class="col-md-6 py-1">
+                  <div class="form-group">
+                    <label>Fecha Inicial</label>
+                    <input type="date" class="form-control col-mx" formControlName="fechaIni">
+                  </div>
+                </div>
+                <div class="col-md-6 py-1">
+                  <div class="form-group">
+                    <label>Fecha Fin</label>
+                    <input type="date" class="form-control col-mx" formControlName="fechaFin" [min]="min">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 py-1">
+                  <div class="form-group">
+                    <label>Cliente</label>
+                    <ng-multiselect-dropdown
+                          formControlName="cliente"
+                          placeholder="Seleccione el cliente"
+                          [settings]="dropdownSettingsSingle"
+                          [data]="clients"
+                      >
+                      </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 py-1">
+                  <div class="form-group">
+                    <label>Linea</label>
+                    <ng-multiselect-dropdown
+                          formControlName="linea"
+                          placeholder="Seleccione la linea"
+                          [settings]="dropdownSettingsSingle"
+                          [data]="lines"
+                      >
+                      </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 py-1">
+                  <div class="form-group">
+                    <label>Clase</label>
+                    <ng-multiselect-dropdown
+                          formControlName="clase"
+                          placeholder="Seleccione la clase"
+                          [settings]="dropdownSettingsSingleNoSearch"
+                          [data]="shiftClass"
+                      >
+                      </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 py-1">
+                  <div class="form-group">
+                    <label>Patio</label>
+                    <ng-multiselect-dropdown
+                          formControlName="patio"
+                          placeholder="Seleccione un patio"
+                          [settings]="dropdownSettingsSingle"
+                          [data]="containerYarn"
+                      >
+                      </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 py-1">
+                  <div class="form-group">
+                    <label>Tipo/tamaño de contenedor</label>
+                    <ng-multiselect-dropdown
+                          formControlName="tipoTamanioContenedor"
+                          placeholder="Seleccione un tipo/tamaño de contenedor"
+                          [settings]="dropdownSettingsSingle"
+                          [data]="containerType"
+                      >
+                      </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="update ml-auto mr-auto">
+                  <button class="btn btn-primary btn-round" [disabled]="formFilter.invalid" (click)="filter()">Consultar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

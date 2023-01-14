@@ -1,0 +1,91 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-6">
+        <button type="button" (click)="backConfig()" class="btn btn-outline-primary">Regresar</button>
+      </div>
+      <div class="col-6 text-right">
+        <button type="button" (click)="create()" class="btn btn-outline-success">Registrar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-6">
+            <h4 style="margin: 10px; font-weight: bold">
+              {{title}}
+            </h4>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control float-right"
+                style="width: 50%"
+                name="search"
+                (keyup)="applyFilter($event)"
+                aria-describedby="helpId"
+                placeholder="Buscar"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table
+            mat-table
+            class="table"
+            [dataSource]="items"
+            matSort
+          >
+            <ng-container matColumnDef="code">
+              <th
+                class="text-primary"
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                Codigo
+              </th>
+              <td mat-cell *matCellDef="let item">{{ item?.code }}</td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+              <th
+                class="text-primary"
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                Description
+              </th>
+              <td mat-cell *matCellDef="let item">{{ item?.description }}</td>
+            </ng-container>
+            <ng-container matColumnDef="select">
+              <th
+                class="text-primary text-right"
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                Aciones
+              </th>
+              <td mat-cell *matCellDef="let item" class="text-right">
+                <button class="btn btn-danger" (click)="delete(item)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                <button class="btn btn-info ml-2"  (click)="update(item)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <mat-paginator
+            [pageSizeOptions]="[10]"
+            aria-label="Select page of users"
+          ></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

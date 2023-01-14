@@ -1,0 +1,281 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-scale-multiple" [fullScreen] = "false">
+  <p style="color: white" > Cargando... </p>
+</ngx-spinner>
+<div class="row">
+  <div class="col-md-12" style="text-align:end">
+    <button *ngIf="step" type="button" class="btn btn-danger ml-2 text-right" data-toggle="button" (click)="getCanceleds()" aria-pressed="false">Anulados</button>
+    <button *ngIf="!step" type="button" class="btn btn-info ml-2 text-right" data-toggle="button" (click)="getInfo()" aria-pressed="false">Regresar</button>
+  </div>
+  <div class="col-md-12" *ngIf="step">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-8">
+              <h4 class="card-title"> Gesti&oacute;n</h4>
+            </div>
+            <div class="col-md-4">
+                <form>
+                  <div class="form-group">
+                      <label for="search" class="col-sm col-form-label">Buscar</label>
+                      <div class="col-md-12">
+                          <input type="text" class="form-control" name="searchvalue" placeholder="Buscar..." id="search" [(ngModel)]="searchvalue">
+                      </div>
+                  </div>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+                TURNO
+              </th>
+              <th>
+                FECHA
+              </th>
+              <th>
+                CONDUCTOR
+              </th>
+              <th>
+                CEDULA
+              </th>
+              <th>
+                CONT #1
+              </th>
+              <th>
+                CONT #2
+              </th>
+              <th>
+                PATIO
+              </th>
+              <th>
+                LINEA
+              </th>
+              <th>
+                ACCIONES
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let shift of shifts | searchfilter: searchvalue | paginate: config">
+                <td class="text-center">
+                  {{ shift.dayShift }}
+                </td>
+                <td>
+                  {{ shift.date | date }}
+                </td>
+                <td>
+                  {{ shift.driver.name | titlecase }}
+                </td>
+                <td>
+                  {{ shift.driver.identification }}
+                </td>
+                <td>
+                  {{ shift.containers.length > 0 ? shift.containers[0].code : "N/A" }}
+                </td>
+                <td>
+                  {{ shift.containers.length > 1 ? shift.containers[1].code : "N/A" }}
+                </td>
+                <td>
+                  {{ shift.containerYard.code }}
+                </td>
+                <td>
+                  {{ shift.transLine.code }}
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-danger btn-sm" style="margin-left: 1px;"  data-toggle="button" (click)="openModal(content, shift.id)" aria-pressed="false" autocomplete="off">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                  <button type="button" class="btn btn-info btn-sm" style="margin-left: 1px;"  data-toggle="button" [routerLink]="['/gestion/detalle/', shift.id]" aria-pressed="false">
+                    <i class="fa fa-info" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="btn btn-success btn-sm" style="margin-left: 1px;"  data-toggle="button" (click)="ticketModal(shift.id)" aria-pressed="false">
+                    <i class="fa fa-print" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="shifts?.length === 0" class="d-flex justify-content-center">
+            No hay registros en la base de datos del sistema.
+          </div>
+          <div *ngIf="shifts?.length > 0" class="d-flex justify-content-between p-2" >
+            <pagination-controls
+            (pageChange)="onPageChange($event)"
+            (pageBoundsCorrection)="onPageBoundsCorrection($event)"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            >
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" *ngIf="!step">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-8">
+              <h4 class="card-title"> Turnos anulados</h4>
+            </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+                TURNO
+              </th>
+              <th>
+                FECHA
+              </th>
+              <th>
+                CONDUCTOR
+              </th>
+              <th>
+                CEDULA
+              </th>
+              <th>
+                CONT #1
+              </th>
+              <th>
+                CONT #2
+              </th>
+              <th>
+                PATIO
+              </th>
+              <th>
+                LINEA
+              </th>
+              <th>
+                ACCIONES
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let shift of shifts | searchfilter: searchvalue | paginate: config">
+                <td class="text-center">
+                  {{ shift.id }}
+                </td>
+                <td>
+                  {{ shift.date | date }}
+                </td>
+                <td>
+                  {{ shift.driver.name | titlecase }}
+                </td>
+                <td>
+                  {{ shift.driver.identification }}
+                </td>
+                <td>
+                  {{ shift.containers.length > 0 ? shift.containers[0].code : "N/A" }}
+                </td>
+                <td>
+                  {{ shift.containers.length > 1 ? shift.containers[1].code : "N/A" }}
+                </td>
+                <td>
+                  {{ shift.containerYard.code }}
+                </td>
+                <td>
+                  {{ shift.transLine.code }}
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-info ml-2" data-toggle="button" [routerLink]="['/gestion/detalle/', shift.id]" aria-pressed="false">
+                    <i class="fa fa-info" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="shifts?.length === 0" class="d-flex justify-content-center">
+            No hay registros en la base de datos del sistema.
+          </div>
+          <div *ngIf="shifts?.length > 0" class="d-flex justify-content-between p-2" >
+            <pagination-controls
+            (pageChange)="onPageChange($event)"
+            (pageBoundsCorrection)="onPageBoundsCorrection($event)"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            >
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">ANULAR TURNO</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="shiftForm" class="mb-5">
+        <div class="form-group">
+          <label class="form-label" for="obvs">Observaci&oacute;n</label>
+          <textarea [ngClass]="{'is-valid':!submitted && cf.obvs.valid,'is-invalid':cf.obvs.invalid && (cf.obvs.dirty || cf.obvs.touched)}"
+                    type="text" class="form-control" formControlName="obvs" id="obvs" placeholder="Ingresa la observación" rows="3">
+          </textarea>
+        </div>
+        <div *ngIf="cf.obvs.invalid && (cf.obvs.dirty || cf.obvs.touched)" class="text-danger">
+          <div *ngIf="cf.obvs.errors.required">
+            El campo es requerido
+          </div>
+          <div *ngIf="cf.obvs.errors.maxlength">
+            El campo tiene un máximo de 500 caracteres
+          </div>
+        </div>
+        <div class="float-right">
+          <button type="button" class="btn btn-dark" (click)="modal.close('cancel')">
+            <span> Cancelar</span>
+          </button>
+          <button type="button" class="btn btn-danger" (click)="modal.close('save')" [disabled]="(cf.obvs.invalid)">
+            <span>Anular</span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      
+  </div>
+  </ng-template>
+  
+  <ng-template #contentTicket let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Tiquete</h4>
+    <h4 class="modal-title" >Turno {{shift?.dayShift}}</h4>
+  </div>
+  <div class="modal-body">
+    <ul class="list-group">
+        <li class="list-group-item" ><strong>Nombre del cliente: </strong> <span style="float: right">{{shift?.client?.name}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" ><strong>Nit: </strong> <span style="float: right">{{shift?.client?.nit}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" class="list-group-item" ><strong>Telefono del cliente: </strong> <span style="float: right">{{shift?.client?.phone}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" *ngIf="shift.shiftClassId === 1 || shift.shiftClassId === 3"><strong>Nombre del conductor: </strong> <span style="float: right">{{shift?.driver?.name}}</span></li>
+        <li class="list-group-item" *ngIf="shift.shiftClassId === 2"><strong>Nombre del empresa: </strong> <span style="float: right">{{shift?.driver?.name}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" *ngIf="shift.shiftClassId === 1 || shift.shiftClassId === 3"><strong>Documento del conductor: </strong> <span style="float: right">{{shift?.driver?.identification}}</span></li>
+        <li class="list-group-item" *ngIf="shift.shiftClassId === 2"><strong>Nit del empresa: </strong> <span style="float: right">{{shift?.driver?.identification}}</span></li>
+        <div *ngFor="let container of shift.containers; let i = index">
+            <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+            <li class="list-group-item" ><strong>Numero de contenedor {{i+1}}: </strong> <span style="float: right">{{container?.code}}</span></li>
+            <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+            <li class="list-group-item"><strong>Tipo de contenedor {{i+1}}: </strong> <span style="float: right">{{container?.containerType?.description}}</span></li>
+        </div>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" ><strong>Fecha de creacion: </strong> <span style="float: right">{{shift?.date | date: 'medium'}}</span></li>
+        <div style="height: 1px;width: 100%;border: 1px solid #ccc;opacity: 0.5;"></div>
+        <li class="list-group-item" style="margin-top:20px"><strong>Total a pagar: </strong> <span style="float: right"> {{shift?.price | currency: 'COP'}}</span></li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click'); genPdf()">Imprimir</button>
+  </div>
+</ng-template>

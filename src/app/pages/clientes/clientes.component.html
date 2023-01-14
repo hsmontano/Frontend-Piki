@@ -1,0 +1,190 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-6">
+      </div>
+      <div class="col-6 text-right">
+        <button type="button" (click)="toggleModal({}, 'create')" class="btn btn-outline-success">Registrar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-6">
+            <h4 style="margin: 10px; font-weight: bold">
+              Clientes
+            </h4>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control float-right"
+                style="width: 50%"
+                name="search"
+                (keyup)="applyFilter($event)"
+                aria-describedby="helpId"
+                placeholder="Buscar"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table
+            mat-table
+            class="table"
+            [dataSource]="items"
+            matSort
+          >
+            <ng-container matColumnDef="nit">
+              <th
+                class="text-primary"
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                NIT
+              </th>
+              <td mat-cell *matCellDef="let item">{{ item?.nit }}</td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th
+                class="text-primary"
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                Nombre
+              </th>
+              <td mat-cell *matCellDef="let item">{{ item?.name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+              <th
+                class="text-primary"
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                Correo electrónico
+              </th>
+              <td mat-cell *matCellDef="let item">{{ item?.email }}</td>
+            </ng-container>
+            <ng-container matColumnDef="phone">
+              <th
+                class="text-primary"
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                Teléfono
+              </th>
+              <td mat-cell *matCellDef="let item">{{ item?.phone }}</td>
+            </ng-container>
+            <ng-container matColumnDef="select">
+              <th
+                class="text-primary text-right"
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                Aciones
+              </th>
+              <td mat-cell *matCellDef="let item" class="text-right">
+                <button class="btn btn-danger" (click)="delete(item)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                <button class="btn btn-info ml-2"  (click)="toggleModal(item, 'update')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <mat-paginator
+            [pageSizeOptions]="[10]"
+            aria-label="Select page of users"
+          ></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner></ngx-spinner>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Clientes</h4>
+  </div>
+  <div class="modal-body">
+    <form
+      [formGroup]="clientForm"
+      action=""
+      *ngIf="type === 'update' || type === 'create'"
+    >
+      <div class="form-group">
+        <label for="">Nit</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="documentId"
+          aria-describedby="helpNit"
+          placeholder="948594895"
+        />
+      </div>
+      <div class="form-group">
+        <label for="">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          aria-describedby="helpName"
+          placeholder="Ciamsa"
+        />
+      </div>
+      <input type="hidden" formControlName="id" />
+      <div class="form-group">
+        <label for="">Correo electrónico</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="email"
+          aria-describedby="helpEmail"
+          placeholder="Correo@correo.com"
+        />
+      </div>
+      <div class="form-group">
+        <label for="">Telefono del cliente</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="phone"
+          aria-describedby="helpPhone"
+          placeholder="3195558888"
+        />
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" (click)="modal.close('Save click')">
+      Cancelar
+    </button>
+    <button
+      type="button"
+      *ngIf="type === 'update'"
+      class="btn btn-info"
+      [disabled]="!clientForm.valid"
+      (click)="update()"
+    >
+      Actualizar
+    </button>
+    <button
+      type="button"
+      *ngIf="type === 'create'"
+      class="btn btn-success"
+      [disabled]="!clientForm.valid"
+      (click)="create()"
+    >
+      Crear
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,5 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-beat" [fullScreen] = "false">
+    <p style="color: white" > Cargando... </p>
+</ngx-spinner>
+<app-form-filter-reportes [hidden]="showTable" (filterData)="filter($event)"></app-form-filter-reportes>
+<app-table-filter-reportes *ngIf="showTable" [campos]="campos" [turnos]="turnos" (volver)="showTable=false" [info]="info" [filter]="filterCampos" ></app-table-filter-reportes>
